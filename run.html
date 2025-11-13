@@ -1,65 +1,140 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Onion.run – Dark Web Gateway</title>
   <style>
+    :root {
+      --bg: #0b0b0b;
+      --card-bg: #111;
+      --accent: #1db954;
+      --accent-hover: #17a844;
+      --text: #e6f0ea;
+      --muted: #9aa6a0;
+      --radius: 12px;
+      --shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background: #0b0b0b;
-      color: #e6f0ea;
-      font-family: Inter, sans-serif;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0b0b0b, #08110a);
+      color: var(--text);
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      text-align: center;
       padding: 20px;
     }
-    h1 { font-size: 1.6rem; margin-bottom: 12px; }
-    p { font-size: 1rem; color: #9aa6a0; margin-bottom: 20px; }
-    input, button {
+
+    .container {
+      background: var(--card-bg);
+      padding: 40px 30px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    p.description {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    input {
+      flex: 1 1 220px;
       padding: 12px 14px;
       font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #1db954;
+      border-radius: var(--radius);
+      border: 1px solid var(--accent);
+      background: #0d0d0d;
+      color: var(--text);
+      transition: border 0.3s, background 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--accent-hover);
+      background: #141414;
       outline: none;
     }
-    input {
-      width: 280px;
-      margin-right: 10px;
-      background: #111;
-      color: #e6f0ea;
-    }
+
     button {
-      background: #1db954;
-      color: #0b0b0b;
-      cursor: pointer;
+      padding: 12px 20px;
+      font-size: 1rem;
       font-weight: 600;
+      color: #0b0b0b;
+      background: var(--accent);
       border: none;
-      transition: all 0.2s ease;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
     }
+
     button:hover {
-      background: #17a844;
+      background: var(--accent-hover);
+      transform: translateY(-2px);
     }
-    footer { margin-top: 30px; font-size: 0.85rem; color: #888; }
+
+    code {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 8px;
+      background: #141414;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      color: var(--accent);
+      word-break: break-word;
+    }
+
+    footer {
+      margin-top: 25px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    @media(max-width: 400px){
+      form {
+        flex-direction: column;
+      }
+      input {
+        margin-right: 0;
+      }
+      button { width: 100%; }
+    }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>Onion.run – Dark Web Gateway</h1>
+    <p class="description">Enter a .onion link below and access it directly via Onion.run without Tor. Just type the address and click "Open Site".</p>
 
-  <h1>Onion.run – Dark Web Gateway</h1>
-  <p>Enter a .onion link and access it directly via Onion.run</p>
+    <form id="gatewayForm">
+      <input type="text" id="onionInput" placeholder="example123456789abcdef.onion" required>
+      <button type="submit">Open Site</button>
+    </form>
 
-  <form id="gatewayForm">
-    <input type="text" id="onionInput" placeholder="example123456789abcdef.onion" required>
-    <button type="submit">Open Site</button>
-  </form>
+    <p>Example: <code>iwggpyxn6qv3b2twpwtyhi2sfvgnby2albbcotcysd5f7obrlwbdbkyd.onion</code></p>
 
-  <p>Example: <code>iwggpyxn6qv3b2twpwtyhi2sfvgnby2albbcotcysd5f7obrlwbdbkyd.onion</code></p>
-
-  <footer>&copy; <span id="year"></span> Onion.run</footer>
+    <footer>&copy; <span id="year"></span> Onion.run</footer>
+  </div>
 
   <script>
     // Insert current year
@@ -69,20 +144,17 @@
       e.preventDefault();
       const input = document.getElementById('onionInput').value.trim().toLowerCase();
 
-      // Validate input: something.onion only
+      // Validate input: .onion domain only
       const pattern = /^[a-z0-9-]{16,56}\.onion$/i;
       if(!pattern.test(input)){
         alert('Please enter a valid .onion domain (e.g., example123456789abcdef.onion)');
         return;
       }
 
-      // Append ".run" to create Onion.run link
+      // Redirect to Onion.run version
       const url = `https://${input}.run/`;
-
-      // Redirect user
       window.location.href = url;
     });
   </script>
-
 </body>
 </html>
