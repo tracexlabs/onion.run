@@ -4,152 +4,160 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Onion.run – Dark Web Gateway</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0a;
-    --card-bg: rgba(20, 20, 20, 0.8);
-    --accent: #1df0a1;
-    --accent-hover: #14c07e;
-    --text: #e6f0ea;
-    --muted: #8c9a91;
-    --radius: 16px;
-    --shadow: 0 10px 30px rgba(0,0,0,0.6);
-  }
+:root{
+  --bg-1:#030303;
+  --bg-2:#061213;
+  --glass: rgba(10,14,12,0.45);
+  --neon:#0ff2a6;
+  --neon-hover:#14c07e;
+  --text:#e6f0ea;
+  --muted:#7f8c82;
+  --radius:14px;
+  --mono:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #0a0a0a, #06100a);
-    color: var(--text);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-  }
+html,body{height:100%;margin:0;font-family:Inter,system-ui,sans-serif;background: linear-gradient(135deg,var(--bg-1),var(--bg-2));display:flex;justify-content:center;align-items:center;overflow:hidden;color:var(--text);}
 
-  .container {
-    background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    padding: 50px 35px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    max-width: 500px;
-    width: 100%;
-    text-align: center;
-    border: 1px solid rgba(29, 249, 164, 0.2);
-  }
+#matrixCanvas{position:fixed;inset:0;z-index:0;mix-blend-mode:screen;opacity:0.22;filter:blur(0.6px);}
 
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 12px;
-    letter-spacing: 1px;
-  }
+.container{
+  position:relative;z-index:2;
+  max-width:600px;width:90%;
+  background:var(--glass);
+  backdrop-filter:blur(8px) saturate(1.1);
+  border-radius:var(--radius);
+  border:1px solid rgba(15,255,170,0.06);
+  padding:40px 30px;
+  text-align:center;
+  box-shadow:0 10px 50px rgba(0,0,0,0.6);
+}
 
-  p.description {
-    color: var(--muted);
-    font-size: 1rem;
-    margin-bottom: 30px;
-    line-height: 1.6;
-  }
+h1{font-size:1.8rem;margin-bottom:12px;letter-spacing:1px;}
+p.description{color:var(--muted);margin-bottom:24px;line-height:1.5;}
 
-  form {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
+form{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
 
-  input {
-    flex: 1 1 220px;
-    padding: 14px 16px;
-    font-size: 1rem;
-    border-radius: var(--radius);
-    border: 1px solid rgba(29, 249, 164, 0.5);
-    background: rgba(10,10,10,0.7);
-    color: var(--text);
-    transition: border 0.3s, background 0.3s;
-  }
+input{
+  flex:1 1 240px;
+  padding:14px 16px;
+  font-size:1rem;
+  border-radius:var(--radius);
+  border:1px solid var(--neon);
+  background:#0d0d0d;
+  color:var(--text);
+  font-family:var(--mono);
+  transition:border 0.3s, background 0.3s;
+}
 
-  input:focus {
-    border-color: var(--accent-hover);
-    background: rgba(20,20,20,0.9);
-    outline: none;
-  }
+input:focus{
+  border-color: var(--neon-hover);
+  outline:none;
+  background:#141414;
+}
 
-  button {
-    padding: 14px 22px;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #0a0a0a;
-    background: var(--accent);
-    border: none;
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
-  }
+button{
+  padding:14px 22px;
+  font-size:1rem;
+  font-weight:600;
+  color:#0b0b0b;
+  background: var(--neon);
+  border:none;
+  border-radius:var(--radius);
+  cursor:pointer;
+  transition: background 0.3s, transform 0.2s;
+}
 
-  button:hover {
-    background: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(29, 249, 164, 0.4);
-  }
+button:hover{
+  background: var(--neon-hover);
+  transform: translateY(-2px);
+}
 
-  code {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 6px 10px;
-    background: rgba(20,20,20,0.7);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: var(--accent);
-    word-break: break-word;
-  }
+a.example-link{
+  display:inline-block;
+  margin-top:12px;
+  color:var(--neon);
+  text-decoration:none;
+  word-break:break-all;
+}
 
-  footer {
-    margin-top: 30px;
-    font-size: 0.85rem;
-    color: var(--muted);
-  }
+a.example-link:hover{
+  color: var(--neon-hover);
+  text-decoration:underline;
+}
 
-  @media(max-width: 400px){
-    form {
-      flex-direction: column;
-    }
-    button { width: 100%; }
-  }
+footer{margin-top:28px;font-size:0.85rem;color:var(--muted);}
 </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Onion.run</h1>
-    <p class="description">Access .onion sites instantly without Tor. Just enter the address and hit "Open Site".</p>
+<canvas id="matrixCanvas"></canvas>
 
-    <form id="gatewayForm">
-      <input type="text" id="onionInput" placeholder="example123456789abcdef.onion" required>
-      <button type="submit">Open Site</button>
-    </form>
+<div class="container">
+  <h1>Onion.run – Quantum Gateway</h1>
+  <p class="description">
+    Add <strong>.run</strong> to any <em>.onion</em> domain to access dark web sites directly from your browser. <br>
+    <strong>No Tor Browser Needed.</strong> Works on Chrome, Firefox, Safari, and more.
+  </p>
 
-    <p>Example: <code>iwggpyxn6qv3b2twpwtyhi2sfvgnby2albbcotcysd5f7obrlwbdbkyd.onion</code></p>
+  <form id="onionForm">
+    <input type="text" name="onion" placeholder="Enter .onion domain (e.g., abc123.onion)" required>
+    <button type="submit">Access Now</button>
+  </form>
 
-    <footer>&copy; <span id="year"></span> Onion.run</footer>
-  </div>
+  <p>🔗 Example:</p>
+  <a class="example-link" href="http://vjuhnp3g3dbqzdm43kornnxn36b6q7vokdzsckavpgkb7wg3a75iccqd.onion.run" target="_blank">
+    vjuhnp3g3dbqzdm43kornnxn36b6q7vokdzsckavpgkb7wg3a75iccqd.onion.run
+  </a>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+  <footer>&copy; <span id="year"></span> Onion.run</footer>
+</div>
 
-    document.getElementById('gatewayForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const input = document.getElementById('onionInput').value.trim().toLowerCase();
-      const pattern = /^[a-z0-9-]{16,56}\.onion$/i;
-      if(!pattern.test(input)){
-        alert('Enter a valid .onion domain (e.g., example123456789abcdef.onion)');
-        return;
-      }
-      window.location.href = `http://${input}.run/`;
-    });
-  </script>
+<script>
+// Set current year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Onion redirect logic
+document.getElementById('onionForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  let domain = document.querySelector('input[name="onion"]').value.trim();
+  if(domain){
+    if(!domain.endsWith('.run')) domain += '.run';
+    const url = `http://${domain}`;
+    window.open(url,'_blank');
+  }
+});
+
+// Matrix background
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+let W,H,fontSize=12,cols;
+function resize(){ W=canvas.width=innerWidth; H=canvas.height=innerHeight; fontSize=Math.max(10,Math.min(18,Math.floor(W/120))); cols=Math.floor(W/fontSize); drops=new Array(cols).fill(1);}
+window.addEventListener('resize',resize);
+resize();
+let drops=new Array(cols).fill(1);
+
+function draw(){
+  ctx.fillStyle='rgba(0,0,0,0.08)';
+  ctx.fillRect(0,0,W,H);
+  ctx.font=`${fontSize}px monospace`;
+  for(let i=0;i<drops.length;i++){
+    const x=i*fontSize;
+    const y=drops[i]*fontSize;
+    const text=String.fromCharCode(0x30A0+Math.random()*96);
+    ctx.fillStyle=`rgba(20,255,180,${Math.random()*0.6})`;
+    ctx.fillText(text,x,y);
+    if(y>H && Math.random()>0.975) drops[i]=0;
+    drops[i]++;
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
 </body>
 </html>
