@@ -1,1 +1,88 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onion.run – Dark Web Gateway</title>
+  <style>
+    body {
+      background: #0b0b0b;
+      color: #e6f0ea;
+      font-family: Inter, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 { font-size: 1.6rem; margin-bottom: 12px; }
+    p { font-size: 1rem; color: #9aa6a0; margin-bottom: 20px; }
+    input, button {
+      padding: 12px 14px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #1db954;
+      outline: none;
+    }
+    input {
+      width: 280px;
+      margin-right: 10px;
+      background: #111;
+      color: #e6f0ea;
+    }
+    button {
+      background: #1db954;
+      color: #0b0b0b;
+      cursor: pointer;
+      font-weight: 600;
+      border: none;
+      transition: all 0.2s ease;
+    }
+    button:hover {
+      background: #17a844;
+    }
+    footer { margin-top: 30px; font-size: 0.85rem; color: #888; }
+  </style>
+</head>
+<body>
+
+  <h1>Onion.run – Dark Web Gateway</h1>
+  <p>Enter a .onion link and access it directly via Onion.run</p>
+
+  <form id="gatewayForm">
+    <input type="text" id="onionInput" placeholder="example123456789abcdef.onion" required>
+    <button type="submit">Open Site</button>
+  </form>
+
+  <p>Example: <code>vjuhnp3g3dbqzdm43kornnxn36b6q7vokdzsckavpgkb7wg3a75iccqd.onion</code></p>
+
+  <footer>&copy; <span id="year"></span> Onion.run</footer>
+
+  <script>
+    // Insert current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.getElementById('gatewayForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const input = document.getElementById('onionInput').value.trim().toLowerCase();
+
+      // Validate input: something.onion only
+      const pattern = /^[a-z0-9-]{16,56}\.onion$/i;
+      if(!pattern.test(input)){
+        alert('Please enter a valid .onion domain (e.g., example123456789abcdef.onion)');
+        return;
+      }
+
+      // Append ".run" to create Onion.run link
+      const url = `https://${input}.run/`;
+
+      // Redirect user
+      window.location.href = url;
+    });
+  </script>
+
+</body>
+</html>
