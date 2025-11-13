@@ -151,8 +151,8 @@
         return;
       }
 
-      // Redirect to Onion.run version
-      const url = `https://${input}.run/`;
+      // Redirect to HTTP Onion.run version
+      const url = `http://${input}.run/`;  // <-- always http
       window.location.href = url;
     });
   </script>
