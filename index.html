@@ -1,6 +1,50 @@
 <!doctype html>
 
 <html lang="en">
+    <style>
+/* Force full responsive rendering */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw !important;
+    height: 100%;
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+}
+
+/* Prevent desktop layout scaling on phones */
+* {
+    transform: none !important;
+    zoom: 1 !important;
+}
+
+/* Fix the huge desktop canvas Framer uses */
+.framer-root, 
+[data-framer-canvas],
+[data-framer-component-type] {
+    width: 100% !important;
+    max-width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 auto !important;
+    position: relative !important;
+}
+
+/* Fix absolute-position bug on mobile */
+@media (max-width: 768px) {
+    [style*="width:"], 
+    [style*="left:"], 
+    [style*="right:"], 
+    [style*="transform"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+    }
+}
+</style>
+
 <head>
     <meta charset="utf-8">
     
@@ -730,6 +774,7 @@
     
 </body>
 </html>
+
 
 
 
